@@ -172,6 +172,10 @@ shinyServer(function(input, output) {
             mutate(., Rate = ifelse(is.na(Rate), 0, Rate))
     })
     
+    
+    years = data.frame("YEAR" = 2008:2019)
+    
+    
     alldf_bycountry2 = reactive({
         alldf %>%
             filter(., COUNTRY_OF_CITIZENSHIP == input$year_country2) %>% 
@@ -180,19 +184,25 @@ shinyServer(function(input, output) {
     
     alldf_bycountry_all2 = reactive({
         alldf_bycountry2() %>%
-            summarise(., Applications = n())
+            summarise(., Applications = n()) %>% 
+            right_join(., years, by = "YEAR") %>% 
+            mutate_all(~replace(., is.na(.), 0))
     })
     
     alldf_bycountry_certified2 = reactive({
         alldf_bycountry2() %>%
             filter(., CASE_STATUS == 'CERTIFIED' | CASE_STATUS == 'CERTIFIED-EXPIRED') %>%
-            summarise(., Certified = n())
+            summarise(., Certified = n()) %>% 
+            right_join(., years, by = "YEAR") %>% 
+            mutate_all(~replace(., is.na(.), 0))
     })
     
     alldf_bycountry_withdrawn2 = reactive({
         alldf_bycountry2() %>%
             filter(., CASE_STATUS == 'WITHDRAWN') %>%
-            summarise(., Withdrawn = n())
+            summarise(., Withdrawn = n()) %>% 
+            right_join(., years, by = "YEAR") %>% 
+            mutate_all(~replace(., is.na(.), 0))
     })
     
     alldf_bycountry_rate2 = reactive({

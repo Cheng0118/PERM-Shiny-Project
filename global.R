@@ -1,8 +1,7 @@
-library(stringi)
 library(tidyverse)
 
-permdata = read.csv(file = './alldf.csv')
-# permdata = stri_trans_general(permdata, "latin-ascii")
+permdata = read.csv('./alldf.csv', header = T)
+# permdata2 = read.csv('D:/Cheng/Documents/NYCDSA/Project_1_Shiny/Github/PERM/alldf2.csv', row.names = NULL, header = T, quote = "", sep = ",", stringsAsFactors = FALSE)
 
   # Case Status
 alldf = permdata %>% mutate(., CASE_STATUS = toupper(CASE_STATUS))
